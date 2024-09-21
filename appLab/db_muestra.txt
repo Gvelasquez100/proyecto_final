@@ -1,0 +1,192 @@
+
+drop database db_muestras;
+create database db_muestras;
+
+-- tabla de roles, puestos, usuarios y bitacora_usuario
+create table db_muestras.roles(
+    id_rol int auto_increment primary key,
+    nombre_rol varchar(15) not null,
+    estado varchar(10) default 'Activo'
+);
+
+insert into db_muestras.roles(nombre_rol) values ('Administrador');
+insert into db_muestras.roles(nombre_rol) values ('Usuario');
+select * from db_muestras.roles;
+
+create table db_muestras.puestos(
+    id_puesto int auto_increment primary key,
+    nombre_puesto varchar(30) not null,
+    estado varchar(10) default 'Activo'
+);
+
+insert into db_muestras.puestos(nombre_puesto) values ('Registro de muestras');
+insert into db_muestras.puestos(nombre_puesto) values ('Analista de laboratorio');
+insert into db_muestras.puestos(nombre_puesto) values ('Almacenamiento de muestras');
+insert into db_muestras.puestos(nombre_puesto) values ('Jefe de laboratorio');
+insert into db_muestras.puestos(nombre_puesto) values ('laboratorio externo');
+insert into db_muestras.puestos(nombre_puesto) values ('usuario de consulta');
+insert into db_muestras.puestos(nombre_puesto) values ('usuario de visualizacion');
+insert into db_muestras.puestos(nombre_puesto) values ('Administrador');
+select * from db_muestras.puestos;
+
+create table db_muestras.usuarios(
+    nit_usuario int primary key,
+    nombre_usuario varchar(60) not null,
+    id_rol int not null,
+    id_puesto int not null,
+    correo_usuario varchar(35) not null,
+    pass_usuario varchar(15) not null,
+    estado varchar(10) default 'Activo',
+    motivo_estado varchar(35) default 'Nuevo Usuario',
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
+    FOREIGN KEY (id_puesto) REFERENCES puestos(id_puesto)
+);
+
+insert into db_muestras.usuarios(nit_usuario, nombre_usuario, id_rol, id_puesto, correo_usuario, pass_usuario) values ('758675001', 'Pablo Mamol','1','8','pablom@labgmail.com','lab123');
+insert into db_muestras.usuarios(nit_usuario, nombre_usuario, id_rol, id_puesto, correo_usuario, pass_usuario) values ('664666002', 'Oscar Culajay','1','8','culajayosc@labgmail.com','lab123');
+insert into db_muestras.usuarios(nit_usuario, nombre_usuario, id_rol, id_puesto, correo_usuario, pass_usuario) values ('368636003', 'David Pablo','2','2','davidp@labgmail.com','lab123');
+insert into db_muestras.usuarios(nit_usuario, nombre_usuario, id_rol, id_puesto, correo_usuario, pass_usuario) values ('112611004', 'Germal Velasquez','2','3','germanv@labgmail.com','lab123');
+
+-- update db_muestras.usuarios set id_rol='2', id_puesto='1' where nit_usuario='758675001';
+-- update para eliminado logico 'estado'
+-- update db_muestras.usuarios set estado='Inactivo', motivo_estado='Despido' where nit_usuario='758675001';
+-- delet no se puede usar por llave foranea
+-- delete from db_muestras.usuarios  where nit_usuario='758675001';
+
+-- select * from db_muestras.usuarios where estado='Activo';
+-- select * from db_muestras.usuarios;
+
+-- bitacora usuario y triggers
+
+CREATE TABLE db_muestras.bitacora_usuarios (
+    id_bitacora INT AUTO_INCREMENT PRIMARY KEY,
+	nit_usuario int,
+    nombre_usuario varchar(60), 
+    id_rol int,
+	id_puesto int,
+    accion VARCHAR(10), -- 'CREATE' o 'UPDATE' o 'DELET'  
+    estado varchar(10),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (nit_usuario) REFERENCES usuarios(nit_usuario),
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
+    FOREIGN KEY (id_puesto) REFERENCES puestos(id_puesto)
+);
+
+select * from db_muestras.bitacora_usuarios;
+
+-- Trigger para INSERT en usuarios
+DELIMITER $$
+CREATE TRIGGER db_muestras.trg_insert_usuarios 
+AFTER INSERT ON db_muestras.usuarios
+FOR EACH ROW
+BEGIN
+    INSERT INTO db_muestras.bitacora_usuarios (nit_usuario, nombre_usuario, id_rol, id_puesto, accion, estado)
+    VALUES (NEW.nit_usuario, NEW.nombre_usuario, NEW.id_rol, NEW.id_puesto, 'CREATE', 'Activo');
+END $$
+DELIMITER ;
+
+-- Trigger para UPDATE en usuarios
+DELIMITER $$
+CREATE TRIGGER db_muestras.trg_update_usuarios 
+AFTER UPDATE ON db_muestras.usuarios
+FOR EACH ROW
+BEGIN
+    INSERT INTO db_muestras.bitacora_usuarios (nit_usuario, nombre_usuario, id_rol, id_puesto, accion, estado)
+    VALUES (NEW.nit_usuario, NEW.nombre_usuario, NEW.id_rol, NEW.id_puesto, 'UPDATE', 'Activo');
+END $$
+DELIMITER ;
+
+
+-- DROP TRIGGER db_muestras.trg_delete_usuarios;
+ 
+
+
+-- segunda parte
+
+create table db_muestras.tipo_solicitud(
+    id_tipo_solicitud int auto_increment primary key,
+    nombre varchar(60) not null
+);
+
+create table db_muestras.tipo_entidad(
+    id_tipo_entidad int auto_increment primary key,
+    nombre varchar(60) not null
+);
+
+create table db_muestras.estado_muestra(
+    id_estado_muestra int auto_increment primary key,
+    nombre varchar(60) not null
+);
+
+create table db_muestras.estado_solicitud(
+    id_estado_solicitud int auto_increment primary key,
+    nombre varchar(60) not null
+);
+
+create table db_muestras.estado_porcion_muestra(
+    id_estado_porcion_muestra int auto_increment primary key,
+    nombre varchar(60) not null
+);
+
+create table db_muestras.solicitudes(
+    id_solicitud int auto_increment primary key,
+    nit_usuario int not null,
+    id_rol int,
+    fecha_ingreso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_tipo_solicitud int not null,
+    nit_proveedor int not null,
+    nombre_proveedor varchar(60) not null,
+    correo_proveedor varchar(60) not null,
+    direccion_proveedor varchar(60) not null,
+    telefono_proveedor int not null,
+    nit_solicitante int not null,
+    nombre_solicitante varchar(60) not null,
+    correo_solicitante varchar(60) not null,
+    id_tipo_entidad int not null, 
+    nombre_entidad varchar(60) not null,
+    cant_muestras int not null,
+    desc_muestra varchar(60) not null,
+	id_estado_muestra int default '1' not null,
+    id_estado_solicitud int default '1' not null,
+    id_estado_porcion_muestra int default '1' not null,
+    FOREIGN KEY (nit_usuario) REFERENCES usuarios(nit_usuario),
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
+    FOREIGN KEY (id_tipo_solicitud) REFERENCES tipo_solicitud(id_tipo_solicitud),
+    FOREIGN KEY (id_tipo_entidad) REFERENCES tipo_entidad(id_tipo_entidad),
+    FOREIGN KEY (id_estado_muestra) REFERENCES estado_muestra(id_estado_muestra),
+    FOREIGN KEY (id_estado_solicitud) REFERENCES estado_solicitud(id_estado_solicitud),
+    FOREIGN KEY (id_estado_porcion_muestra) REFERENCES porcion_muestra(id_estado_porcion_muestra)
+);
+
+-- bitacora usuario y triggers
+
+
+CREATE TABLE db_gestor.bitacora_solicitud (
+    id_bitacora INT AUTO_INCREMENT PRIMARY KEY,
+    id_solicitud INT,
+    nombre_horario VARCHAR(60),
+    descripcion VARCHAR(60),
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    id_turno INT,
+    accion VARCHAR(10), -- 'UPDATE' o 'DELETE'
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    nueva_fecha DATE,
+    FOREIGN KEY (id_horario) REFERENCES horarios(id_horario)
+);
+
+-- select * from db_gestor.bitacora_horarios;
+
+CREATE TABLE db_gestor.bitacora_solicitud (
+    id_bitacora INT AUTO_INCREMENT PRIMARY KEY,
+    id_solicitud int,
+    id_tipo_solicitud int,
+    id_usuario int,
+    accion VARCHAR(10), -- 'CREATE' o 'UPDATE'
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_solicitud) REFERENCES solicitudes(id_solicitud),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(nit_usuario),
+    FOREIGN KEY (id_tipo_solicitud) REFERENCES tipo_solicitud(id_tipo_solicitud)
+);
+
+
