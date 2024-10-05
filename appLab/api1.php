@@ -6,6 +6,22 @@
     
     // READ: Leer los registros de la base de datos
     if($request == 1){
+      $sql = "SELECT u.nit_usuario, u.nombre_usuario, r.nombre_rol, p.nombre_puesto, u.correo_usuario, u.pass_usuario, u.estado, u.motivo_estado
+			  FROM db_muestras.usuarios u
+		      INNER JOIN db_muestras.roles r ON u.id_rol = r.id_rol
+			  INNER JOIN db_muestras.puestos p ON u.id_puesto = p.id_puesto";
+      $query = $mysqli->query($sql);
+        
+      $datos = array();
+      while($resultado = $query->fetch_assoc()) {
+        $datos[] = $resultado;
+      }
+        
+      echo json_encode($datos);
+      exit;
+    }
+	/*
+	if($request == 1){
       $sql = "SELECT * FROM usuarios";
       $query = $mysqli->query($sql);
         
@@ -17,7 +33,7 @@
       echo json_encode($datos);
       exit;
     }
-
+	*/
     // CREATE: Insertar registro en la base de datos
     if($request == 2) {
       $nit_usuario = $datos->nit_usuario;

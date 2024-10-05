@@ -6,7 +6,11 @@
     
     // READ: Leer los registros de la base de datos
     if($request == 1){
-      $sql = "SELECT * FROM bitacora_usuarios";
+      $sql = "SELECT b.id_bitacora, b.nit_usuario, u.nombre_usuario, r.nombre_rol, p.nombre_puesto, b.accion, b.fecha
+              FROM db_muestras.bitacora_usuarios b
+              INNER JOIN db_muestras.usuarios u ON b.nit_usuario = u.nit_usuario
+              INNER JOIN db_muestras.roles r ON u.id_rol = r.id_rol
+              INNER JOIN db_muestras.puestos p ON u.id_puesto = p.id_puesto;";
       $query = $mysqli->query($sql);
         
       $datos = array();
@@ -18,6 +22,19 @@
       exit;
     }
 /*
+	if($request == 1){
+      $sql = "SELECT * FROM bitacora_usuarios";
+      $query = $mysqli->query($sql);
+        
+      $datos = array();
+      while($resultado = $query->fetch_assoc()) {
+        $datos[] = $resultado;
+      }
+        
+      echo json_encode($datos);
+      exit;
+    }
+	
     // CREATE: Insertar registro en la base de datos
     if($request == 2) {
       $nit_usuario = $datos->nit_usuario;

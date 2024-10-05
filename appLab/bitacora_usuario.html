@@ -54,7 +54,6 @@
                 <th scope="col">ROL</th>
                 <th scope="col">PUESTO</th>
                 <th scope="col">ACCION</th>
-                <th scope="col">ESTADO</th>
                 <th scope="col">FECHA</th>
             </thead>
             <tbody class="table-group-divider">
@@ -62,10 +61,9 @@
                     <td> {{ bitacora_usuarios.id_bitacora }} </td>
                     <td> {{ bitacora_usuarios.nit_usuario }} </td>
                     <td> {{ bitacora_usuarios.nombre_usuario }} </td>
-                    <td> {{ bitacora_usuarios.id_rol }} </td>
-                    <td> {{ bitacora_usuarios.id_puesto }} </td>
+                    <td> {{ bitacora_usuarios.nombre_rol }} </td>
+                    <td> {{ bitacora_usuarios.nombre_puesto }} </td>
                     <td> {{ bitacora_usuarios.accion }} </td>
-                    <td> {{ bitacora_usuarios.estado }} </td>
                     <td> {{ bitacora_usuarios.fecha }} </td>
                 </tr>
             </tbody>
@@ -82,10 +80,9 @@
                 id_bitacora: '',
                 nit_usuario: '',
                 nombre_usuario: '',
-                id_rol: '',
-                id_puesto: '',
+                nombre_rol: '',
+                nombre_puesto: '',
                 accion: '',
-                estado: '',
                 fecha: ''
             },
             methods: {
