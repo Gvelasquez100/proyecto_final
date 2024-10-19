@@ -1,7 +1,7 @@
 -- proyecto Que riquito
 
--- create database db_muestras;
--- drop database db_muestras;
+create database db_muestras;
+drop database db_muestras;
 
 -- tabla de roles, puestos, usuarios y bitacora_usuario
 create table db_muestras.roles(
@@ -102,18 +102,6 @@ BEGIN
 END $$
 DELIMITER ;
 
--- Trigger para DELETE en usuarios
--- no funciona por llave foranea
-DELIMITER $$
-CREATE TRIGGER db_muestras.trg_delete_usuarios 
-AFTER DELETE ON db_muestras.usuarios
-FOR EACH ROW
-BEGIN
-    INSERT INTO db_muestras.bitacora_usuarios (nit_usuario, nombre_usuario, id_rol, id_puesto, accion, estado)
-    VALUES (OLD.nit_usuario, OLD.nombre_usuario, OLD.id_rol, OLD.id_puesto, 'DELETE', 'Inactivo');
-END $$
-DELIMITER ;
-
 -- DROP TRIGGER db_muestras.trg_insert_usuarios ;
 -- DROP TRIGGER db_muestras.trg_update_usuarios;
 
@@ -128,75 +116,75 @@ select * from db_muestras.bitacora_usuarios;
 -- segunda parte
 create table db_muestras.tipo_solicitud(
     id_tipo_solicitud int auto_increment primary key,
-    nombre varchar(25) not null
+    nombre_solicitud varchar(25) not null
 );
-insert into db_muestras.tipo_solicitud(nombre) values ('Muestra para Analisis');
-insert into db_muestras.tipo_solicitud(nombre) values ('Solicitud sin Muestra');
+insert into db_muestras.tipo_solicitud(nombre_solicitud) values ('Muestra para Analisis');
+insert into db_muestras.tipo_solicitud(nombre_solicitud) values ('Solicitud sin Muestra');
 select * from db_muestras.tipo_solicitud;
 
 create table db_muestras.tipo_entidad(
     id_tipo_entidad int auto_increment primary key,
-    nombre varchar(30) not null
+    nombre_entidad varchar(30) not null
 );
 
-insert into db_muestras.tipo_entidad(nombre) values ('Entidad Privada');
-insert into db_muestras.tipo_entidad(nombre) values ('Entidad Pública');
+insert into db_muestras.tipo_entidad(nombre_entidad) values ('Entidad Privada');
+insert into db_muestras.tipo_entidad(nombre_entidad) values ('Entidad Pública');
 select * from db_muestras.tipo_entidad;
 
 create table db_muestras.estado_solicitud(
     id_estado_solicitud int auto_increment primary key,
-    nombre varchar(35) not null
+    nombre_es_solicitud varchar(35) not null
 );
-insert into db_muestras.estado_solicitud(nombre) values ('Registrada');
-insert into db_muestras.estado_solicitud(nombre) values ('Asignada Analista Laboratorio');
-insert into db_muestras.estado_solicitud(nombre) values ('Asignada Almacenamiento de Muestra');
-insert into db_muestras.estado_solicitud(nombre) values ('Finalizada');
+insert into db_muestras.estado_solicitud(nombre_es_solicitud) values ('Registrada');
+insert into db_muestras.estado_solicitud(nombre_es_solicitud) values ('Asignada Analista Laboratorio');
+insert into db_muestras.estado_solicitud(nombre_es_solicitud) values ('Asignada Almacenamiento de Muestra');
+insert into db_muestras.estado_solicitud(nombre_es_solicitud) values ('Finalizada');
 select * from db_muestras.estado_solicitud;
 
 create table db_muestras.estado_muestra(
     id_estado_muestra int auto_increment primary key,
-    nombre varchar(40) not null
+    nombre_es_muestra varchar(40) not null
 );
-insert into db_muestras.estado_muestra(nombre) values ('RE-Registrada');
-insert into db_muestras.estado_muestra(nombre) values ('AN-En Analisis');
-insert into db_muestras.estado_muestra(nombre) values ('AE-Analisis Externo');
-insert into db_muestras.estado_muestra(nombre) values ('DS-Devuelta a solicitante interno');
-insert into db_muestras.estado_muestra(nombre) values ('ECT-Consumo Total');
-insert into db_muestras.estado_muestra(nombre) values ('TA-Traslado Almacenamiento');
-insert into db_muestras.estado_muestra(nombre) values ('BG-En Bodega');
-insert into db_muestras.estado_muestra(nombre) values ('EN-En Notificacion');
-insert into db_muestras.estado_muestra(nombre) values ('DV-Devuelta al Interesado');
-insert into db_muestras.estado_muestra(nombre) values ('DE-Muestra Destruida');
-insert into db_muestras.estado_muestra(nombre) values ('IO-Inactivación de Oficio');
-insert into db_muestras.estado_muestra(nombre) values ('RC-Rechazada');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('RE-Registrada');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('AN-En Analisis');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('AE-Analisis Externo');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('DS-Devuelta a solicitante interno');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('ECT-Consumo Total');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('TA-Traslado Almacenamiento');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('BG-En Bodega');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('EN-En Notificacion');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('DV-Devuelta al Interesado');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('DE-Muestra Destruida');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('IO-Inactivación de Oficio');
+insert into db_muestras.estado_muestra(nombre_es_muestra) values ('RC-Rechazada');
 select * from db_muestras.estado_muestra;
 
 create table db_muestras.estado_porcion_muestra(
     id_estado_porcion_muestra int auto_increment primary key,
-    nombre varchar(30) not null
+    nombre_es_porcion varchar(30) not null
 );
-insert into db_muestras.estado_porcion_muestra(nombre) values ('Registrada');
-insert into db_muestras.estado_porcion_muestra(nombre) values ('En análisis');
-insert into db_muestras.estado_porcion_muestra(nombre) values ('En análisis externo');
-insert into db_muestras.estado_porcion_muestra(nombre) values ('Traslado almacenamiento');
-insert into db_muestras.estado_porcion_muestra(nombre) values ('En bodega');
-insert into db_muestras.estado_porcion_muestra(nombre) values ('Destruida');
+insert into db_muestras.estado_porcion_muestra(nombre_es_porcion) values ('Registrada');
+insert into db_muestras.estado_porcion_muestra(nombre_es_porcion) values ('En análisis');
+insert into db_muestras.estado_porcion_muestra(nombre_es_porcion) values ('En análisis externo');
+insert into db_muestras.estado_porcion_muestra(nombre_es_porcion) values ('Traslado almacenamiento');
+insert into db_muestras.estado_porcion_muestra(nombre_es_porcion) values ('En bodega');
+insert into db_muestras.estado_porcion_muestra(nombre_es_porcion) values ('Destruida');
 select * from db_muestras.estado_porcion_muestra;
 
 create table db_muestras.documento(
     id_documento int auto_increment primary key,
-    nombre varchar(30) not null
+    nombre_doc varchar(30) not null
 );
-insert into db_muestras.documento(nombre) values ('Certificado de Ensayo');
-insert into db_muestras.documento(nombre) values ('Opinión Técnica Merceologica');
-insert into db_muestras.documento(nombre) values ('Informe');
-insert into db_muestras.documento(nombre) values ('Providencia');
-insert into db_muestras.documento(nombre) values ('Documentos Análisis Externo');
+insert into db_muestras.documento(nombre_doc) values ('Certificado de Ensayo');
+insert into db_muestras.documento(nombre_doc) values ('Opinión Técnica Merceologica');
+insert into db_muestras.documento(nombre_doc) values ('Informe');
+insert into db_muestras.documento(nombre_doc) values ('Providencia');
+insert into db_muestras.documento(nombre_doc) values ('Documentos Análisis Externo');
 select * from db_muestras.documento;
 
 create table db_muestras.solicitudes(
-	id_solicitud int auto_increment primary key,
-    fecha_ingreso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_solicitud int auto_increment primary key,
+    fecha_ingreso date DEFAULT (CURRENT_DATE),
     nit_usuario int not null,
     nombre_usuario varchar(60) not null,
     id_rol int not null,
@@ -220,7 +208,7 @@ create table db_muestras.solicitudes(
     id_estado_porcion_muestra int default '1' not null,
     FOREIGN KEY (nit_usuario) REFERENCES usuarios(nit_usuario),
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
-	FOREIGN KEY (id_documento) REFERENCES documento(id_documento),
+    FOREIGN KEY (id_documento) REFERENCES documento(id_documento),
     FOREIGN KEY (id_tipo_solicitud) REFERENCES tipo_solicitud(id_tipo_solicitud),
     FOREIGN KEY (id_tipo_entidad) REFERENCES tipo_entidad(id_tipo_entidad),
     FOREIGN KEY (id_estado_solicitud) REFERENCES estado_solicitud(id_estado_solicitud),
@@ -246,6 +234,7 @@ CREATE TABLE db_muestras.bitacora_solicitud(
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
 );
 select * from db_muestras.bitacora_solicitud;
+SELECT id_bitacora, id_solicitud, nombre_usuario, fecha FROM db_muestras.bitacora_solicitud WHERE id_solicitud = '1';
 
 -- Trigger para INSERT en bitacora solicitudes
 DELIMITER $$
@@ -278,6 +267,11 @@ insert into db_muestras.solicitudes(nit_usuario, nombre_usuario, id_rol, id_tipo
     direccion_proveedor, telefono_proveedor, nit_solicitante, nombre_solicitante, correo_solicitante, cant_muestras, desc_muestra, id_documento, documento) 
 values ('368636003', 'David Pablo', '2', '1', '1', 'Toledo', '454560109', 'Toledo', 'info@toledo.com',
     '3ra calle 4-15 zona 11', '66582901', '898901001', 'Juan Ramos', 'jramos@toledo.com', '2', 'jamon de pavo', '3', 'informetoledo.pdf');
+insert into db_muestras.solicitudes(nit_usuario, nombre_usuario, id_rol, id_tipo_solicitud, id_tipo_entidad, nombre_entidad, nit_proveedor, nombre_proveedor, correo_proveedor,
+    direccion_proveedor, telefono_proveedor, nit_solicitante, nombre_solicitante, correo_solicitante, cant_muestras, desc_muestra, id_documento, documento) 
+values ('112611004', 'Germal Velasquez', '2', '1', '1', 'Malher', '855560109', 'Malher', 'info@malher.com',
+    '3ra calle 6-15 zona 12', '66992900', '868901000', 'Julia Ramos', 'juliaramos@malher.com', '2', 'consome', '3', 'informemalher.pdf');
 
 select * from db_muestras.solicitudes;
 select * from db_muestras.bitacora_solicitud;
+

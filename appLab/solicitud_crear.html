@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EMPLEADO</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="full-box page-header" style="background-color: rgb(71, 120, 211);">
+        <h2 class="text-center">
+            <i class="fab fa-dashcube fa-fw"></i> &nbsp; 
+        </h2>
+        <p class="text-justify">
+        </p>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="home_empleado.html">MENU </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="solicitud_list.html">LISTA DE SOLICITUDES</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    
+    <div id="app01" align="center" width="200">
+        <div>
+            <div class="full-box page-header">
+                <h2 class="text-center">
+                    <i class="fab fa-dashcube fa-fw"></i> &nbsp; REGISTRO DE SOLICITUD Y MUESTRA
+                </h2>
+                <p class="text-justify">
+                </p>
+            </div>
+            <br>
+
+            <div style="text-align: left;" class="col-md-4">
+                <div class="form-group">
+                    <h2 class="text-center">
+                        <i class="fab fa-dashcube fa-fw"></i> &nbsp; Datos de Usuario
+                    </h2>
+                    <label for="nit">Nit:</label>
+                    <input type="text" class="form-control" id="nit" name="nit"  maxlength="9" placeholder="No. nit" required v-model="nit_usuario"/>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre"  maxlength="60" placeholder="Nombre y Apellido" required v-model="nombre_usuario"/>
+                </div>
+                <div class="form-group">
+                    <label for="rolList" class="form-label">Rol:</label>
+                    <select class="form-select" id="rolList" required v-model="id_rol">
+                      <option selected>Selecciona un rol</option>
+                      <option value="1">Administrador</option>
+                      <option value="2">Usuario</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <h2 class="text-center">
+                        <i class="fab fa-dashcube fa-fw"></i> &nbsp; Datos de Solicitud
+                    </h2>
+                    <label for="tipoSolicitud" class="form-label">Tipo de Solicitud:</label>
+                    <select class="form-select" id="tipoSolicitud" required v-model="id_tipo_solicitud">
+                      <option selected>Selecciona un tipo de solicitud</option>
+                      <option value="1">Muestra para Analisis</option>
+                      <option value="2">Solicitud sin Muestra</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tipoEntidad" class="form-label">Tipo de Entidad:</label>
+                    <select class="form-select" id="tipoEntidad" required v-model="id_tipo_entidad">
+                      <option selected>Selecciona un tipo de entidad</option>
+                      <option value="1">Entidad Privada</option>
+                      <option value="2">Entidad Pública</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nombreEntidad">Entidad:</label>
+                    <input type="text" class="form-control" id="nombreEntidad" name="nombreEntidad"  maxlength="35" placeholder="Nombre de la entidad" required v-model="nombre_entidad"/>
+                </div>
+                <div class="form-group">
+                    <h2 class="text-center">
+                        <i class="fab fa-dashcube fa-fw"></i> &nbsp; Datos del Proveedor
+                    </h2>
+                    <label for="nitProveedor">Nit:</label>
+                    <input type="text" class="form-control" id="nitProveedor" name="nitProveedor"  maxlength="9" placeholder="No. nit" required v-model="nit_proveedor"/>
+                </div>
+                <div class="form-group">
+                    <label for="nombreProveedor">Nombre:</label>
+                    <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor"  maxlength="35" placeholder="Nombre y Apellido" required v-model="nombre_proveedor"/>
+                </div>
+                <div class="form-group">
+                    <label for="correoProveedor">Correo:</label>
+                    <input type="email" class="form-control" id="correoProveedor" name="correoProveedor"  maxlength="35" placeholder="correo@proveedor.com" required v-model="correo_proveedor"/>
+                </div>
+                <div class="form-group">
+                    <label for="dirProveedor">Direccion:</label>
+                    <input type="text" class="form-control" id="dirProveedor" name="dirProveedor"  maxlength="60" placeholder="Direccion" required v-model="direccion_proveedor"/>
+                </div>
+                <div class="form-group">
+                    <label for="telProveedor">Telefono:</label>
+                    <input type="text" class="form-control" id="telProveedor" name="telProveedor"  maxlength="8" placeholder="No. telefono" required v-model="telefono_proveedor"/>
+                </div>
+                <div class="form-group">
+                    <h2 class="text-center">
+                        <i class="fab fa-dashcube fa-fw"></i> &nbsp; Datos del Solicitante
+                    </h2>
+                    <label for="nitSolicitante">Nit:</label>
+                    <input type="text" class="form-control" id="nitSolicitante" name="nitSolicitante"  maxlength="9" placeholder="No. nit" required v-model="nit_solicitante"/>
+                </div>
+                <div class="form-group">
+                    <label for="nombreSolicitante">Nombre:</label>
+                    <input type="text" class="form-control" id="nombreSolicitante" name="nombreSolicitante"  maxlength="35" placeholder="Nombre y Apellido" required v-model="nombre_solicitante"/>
+                </div>
+                <div class="form-group">
+                    <label for="correoSolicitante">Correo:</label>
+                    <input type="email" class="form-control" id="correoSolicitante" name="correoSolicitante"  maxlength="35" placeholder="correo@solicitante.com" required v-model="correo_solicitante"/>
+                </div>
+                <div class="form-group">
+                    <h2 class="text-center">
+                        <i class="fab fa-dashcube fa-fw"></i> &nbsp; Datos de la Muestra
+                    </h2>
+                    <label for="cantMuestras">Cantidad de Muestras:</label>
+                    <input type="text" class="form-control" id="cantMuestras" name="cantMuestras"  maxlength="2" placeholder="No. muestras" required v-model="cant_muestras"/>
+                </div>
+                <div class="form-group">
+                    <label for="descMuestra">Descripcion:</label>
+                    <input type="text" class="form-control" id="descMuestra" name="descMuestra"  maxlength="60" placeholder="Descripcion de la muestra" required v-model="desc_muestra"/>
+                </div>
+                <div class="form-group">
+                    <h2 class="text-center">
+                        <i class="fab fa-dashcube fa-fw"></i> &nbsp; Documentos
+                    </h2>
+                    <label for="tipoDoc" class="form-label">Tipo de Documento:</label>
+                    <select class="form-select" id="tipoDoc" required v-model="id_documento">
+                      <option selected>Selecciona un tipo de documento</option>
+                      <option value="1">Certificado de Ensayo</option>
+                      <option value="2">Opinión Técnica Merceologica</option>
+                      <option value="3">Informe</option>
+                      <option value="4">Providencia</option>
+                      <option value="5">Documentos Análisis Externo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="doc">Documento:</label>
+                    <input type="file" class="form-control" id="doc" name="doc" required v-model="documento"/>
+                </div>
+                <br>
+                  <div class="form-group">
+                    <button value="Crear" @click="addSolicitud();" class="btn btn-success">CREAR</button>
+                  </div>
+            </div>
+
+        </div>
+   
+    
+        <br>
+<!--
+        <table class="table">
+            <thead align="left">
+                <th scope="col">NIT</th>
+                <th scope="col">NOMBRE</th>
+                <th scope="col">ROL</th>
+                <th scope="col">PUESTO</th>
+                <th scope="col">CORREO</th>
+                <th scope="col">CONTRASEÑA</th>
+                <th scope="col">ESTADO</th>
+                <th scope="col">DESCRIPCION</th>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr v-for="(usuario, index) in usuario">
+                    <td> {{ usuario.nit_usuario }} </td>
+                    <td> {{ usuario.nombre_usuario }} </td>
+                    <td> {{ usuario.id_rol }} </td>
+                    <td> {{ usuario.id_puesto }} </td>
+                    <td> {{ usuario.correo_usuario }} </td>
+                    <td> {{ usuario.pass_usuario }} </td>
+                    <td> {{ usuario.estado }} </td>
+                    <td> {{ usuario.motivo_estado }} </td>
+                    <td> <button value="editar" class="btn btn-warning" @click="editUsuario(index, usuario.nit_usuario)"> EDITAR </button> </td>
+                    <td> <button value="eliminar" class="btn btn-danger" @click="deleteUsuario(index, usuario.nit_usuario)"> ELIMINAR </button> </td>
+                </tr>
+            </tbody>
+        </table>
+-->
+        <br>
+        
+    </div>
+
+    <script>
+        var app01 = new Vue({
+            el: '#app01',
+            data: {
+                solicitudes: [],
+                id_solicitud: '',
+                fecha_ingreso: '',
+                nit_usuario: '',
+                nombre_usuario: '',
+                id_rol: '',
+                id_tipo_solicitud: '',
+                id_tipo_entidad: '',
+                nombre_entidad: '',
+                nit_proveedor: '',
+                nombre_proveedor: '',
+                correo_proveedor: '',
+                direccion_proveedor: '',
+                telefono_proveedor: '',
+                nit_solicitante: '',
+                nombre_solicitante: '',
+                correo_solicitante: '',
+                cant_muestras: '',
+                desc_muestra: '',
+                id_documento: '',
+                documento: '',
+                id_estado_solicitud: '',
+                id_estado_muestra: '',
+                id_estado_porcion_muestra: ''
+            },
+            methods: {
+                obtenerSolicitud: function() {
+                    axios.post('api5.php', {
+                        request: 1
+                    })
+                    .then(function(response) {
+                        app01.solicitudes = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                }, 
+
+                addSolicitud: function() {
+                    if(this.nit_usuario != '' && this.nombre_usuario != '' && this.id_rol !='' && this.id_tipo_solicitud !='' && this.id_tipo_entidad !='' 
+                    && this.nombre_entidad != '' && this.nit_proveedor != '' && this.nombre_proveedor != '' && this.correo_proveedor != '' && this.direccion_proveedor != ''
+                    && this.telefono_proveedor != '' && this.nit_solicitante != '' && this.nombre_solicitante != '' && this.correo_solicitante != '' && this.cant_muestras != ''
+                    && this.desc_muestra != '' && this.id_documento != '' && this.documento != '') {
+                        axios.post('api5.php', {
+                            request: 2,
+                            nit_usuario: this.nit_usuario,
+                            nombre_usuario: this.nombre_usuario,
+                            id_rol: this.id_rol,
+                            id_tipo_solicitud: this.id_tipo_solicitud,
+                            id_tipo_entidad: this.id_tipo_entidad,
+                            nombre_entidad: this.nombre_entidad,
+                            nit_proveedor: this.nit_proveedor,
+                            nombre_proveedor: this.nombre_proveedor,
+                            correo_proveedor: this.correo_proveedor,
+                            direccion_proveedor: this.direccion_proveedor,
+                            telefono_proveedor: this.telefono_proveedor,
+                            nit_solicitante: this.nit_solicitante,
+                            nombre_solicitante: this.nombre_solicitante,
+                            correo_solicitante: this.correo_solicitante,
+                            cant_muestras: this.cant_muestras,
+                            desc_muestra: this.desc_muestra,
+                            id_documento: this.id_documento,
+                            documento: this.documento
+                        })
+                        .then(function(response) {
+                            app01.obtenerSolicitud();
+                            
+                            app01.id_solicitud= '',
+                            app01.fecha_ingreso= '',
+                            app01.nit_usuario= '',
+                            app01.nombre_usuario= '',
+                            app01.id_rol= '',
+                            app01.id_tipo_solicitud= '',
+                            app01.id_tipo_entidad= '',
+                            app01.nombre_entidad= '',
+                            app01.nit_proveedor= '',
+                            app01.nombre_proveedor= '',
+                            app01.correo_proveedor= '',
+                            app01.direccion_proveedor= '',
+                            app01.telefono_proveedor= '',
+                            app01.nit_solicitante= '',
+                            app01.nombre_solicitante= '',
+                            app01.correo_solicitante= '',
+                            app01.cant_muestras= '',
+                            app01.desc_muestra= '',
+                            app01.id_documento= '',
+                            app01.documento= '',
+                            app01.id_estado_solicitud= '',
+                            app01.id_estado_muestra= '',
+                            app01.id_estado_porcion_muestra= '';
+                            
+
+                            alert(response.data);
+                        })
+                        .catch(function () {
+                            console.log(error);
+                        });
+                    } else {
+                        alert("Llenar los campos.");
+                    }
+                },
+
+                editSolicitud: function(index, nit_usuario) {
+                    var nit_usuario = this.nit_usuario;
+                    var nombre_usuario = this.nombre_usuario;
+                    var id_rol = this.id_rol;
+                    var id_tipo_solicitud = this.id_tipo_solicitud;
+                    var id_tipo_entidad = this.id_tipo_entidad;
+                    var nombre_entidad =  this.nombre_entidad;
+                    var nit_proveedor = this.nit_proveedor;
+                    var nombre_proveedor = this.nombre_proveedor;
+                    var correo_proveedor = this.correo_proveedor;
+                    var direccion_proveedor = this.direccion_proveedor;
+                    var telefono_proveedor = this.telefono_proveedor;
+                    var nit_solicitante = this.nit_solicitante;
+                    var nombre_solicitante = this.nombre_solicitante;
+                    var correo_solicitante = this.correo_solicitante;
+                    var cant_muestras = this.cant_muestras;
+                    var desc_muestra = this.desc_muestra;
+                    var id_documento = this.id_documento;
+                    var documento = this.documento;
+                    
+
+                    if(this.nombre_usuario != '' && this.id_rol !='') {
+                        axios.post('api5.php', {
+                            request: 3,
+                            
+                            nit_usuario: nit_usuario,
+                            nombre_usuario: nombre_usuario,
+                            id_rol: id_rol,
+                            id_tipo_solicitud: id_tipo_solicitud,
+                            id_tipo_entidad: id_tipo_entidad,
+                            nombre_entidad: nombre_entidad,
+                            nit_proveedor: nit_proveedor,
+                            nombre_proveedor: nombre_proveedor,
+                            correo_proveedor: correo_proveedor,
+                            direccion_proveedor: direccion_proveedor,
+                            telefono_proveedor: telefono_proveedor,
+                            nit_solicitante: nit_solicitante,
+                            nombre_solicitante: nombre_solicitante,
+                            correo_solicitante: correo_solicitante,
+                            cant_muestras: cant_muestras,
+                            desc_muestra: desc_muestra,
+                            id_documento: id_documento,
+                            documento: documento
+                            
+                        })
+                        .then(function(response) {
+                            app01.obtenerSolicitud();
+                            app01.id_solicitud= '';
+                            app01.fecha_ingreso= '';
+                            app01.nit_usuario= '';
+                            app01.nombre_usuario= '';
+                            app01.id_rol= '';
+                            app01.id_tipo_solicitud= '';
+                            app01.id_tipo_entidad= '';
+                            app01.nombre_entidad= '';
+                            app01.nit_proveedor= '';
+                            app01.nombre_proveedor= '';
+                            app01.correo_proveedor= '';
+                            app01.direccion_proveedor= '';
+                            app01.telefono_proveedor= '';
+                            app01.nit_solicitante= '';
+                            app01.nombre_solicitante= '';
+                            app01.correo_solicitante= '';
+                            app01.cant_muestras= '';
+                            app01.desc_muestra= '';
+                            app01.id_documento= '';
+                            app01.documento= '';
+                            app01.id_estado_solicitud= '';
+                            app01.id_estado_muestra= '';
+                            app01.id_estado_porcion_muestra= '';
+                            
+                            alert(response.data);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    }
+                },
+
+                /*
+                deleteSolicitud: function(index, nit_usuario) {
+                    axios.post('api5.php', {
+                        request: 4,
+                        id_usuario: id_usuario
+                    })
+                    .then(function(response) {
+                        app01.usuario.splice(index, 1);
+                        alert(response.data);
+                    })
+                    .catch( function(error) {
+                        console.log(error);
+                    });
+                }
+
+                */
+                deleteUsuario: function(index, id_solicitud) {
+                    axios.post('api5.php', {
+                        request: 4,
+                        id_solicitud: id_solicitud
+                    })
+                    .then(function(response) {
+                        app01.obtenerSolicitud();
+                        alert(response.data);
+                    })
+                    .catch( function(error) {
+                        console.log(error);
+                    });
+                }
+
+            },
+
+            created: function() {
+                this.obtenerSolicitud();
+            }
+        })
+    </script>
+</body>
+</html>

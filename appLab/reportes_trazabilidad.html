@@ -27,21 +27,25 @@
               <li class="nav-item">
                 <a class="nav-link" href="home_empleado.html">MENU </a>
               </li>
-              <!--
-              <li class="nav-item">
-                <a class="nav-link" href="solicitud_revision.html">REVISION DE PASO</a>
+              <li class="nav-item"></li>
+                <a class="nav-link" href="reportes.html">REPORTE POR ESTADO</a>
               </li>
-              -->
+              <li class="nav-item">
+                <a class="nav-link" href="reportes_solicitudes.html">REPORTE DE SOLICITUDES</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="reportes_muestra.html">REPORTE DE MUESTRAS</a>
+              </li>
             </ul>
           </div>
         </div>
       </nav>
     
-    <div id="app3" align="center" width="200">
+    <div id="app6" align="center" width="200">
         <div>
             <div class="full-box page-header">
                 <h2 class="text-center">
-                    <i class="fab fa-dashcube fa-fw"></i> &nbsp; VISUALIZACION DE SOLICITUDES
+                    <i class="fab fa-dashcube fa-fw"></i> &nbsp; REPORTE POR TRAZABILIDAD DE MUESTRA
                 </h2>
                 <p class="text-justify">
                 </p>
@@ -49,88 +53,85 @@
             <br>
             <div style="text-align: left;" class="col-md-4">
                 <div class="form-group">
-                    <label for="nit">No. NIT:</label>
-                    <input type="search" class="form-control" id="nit" name="nit"  maxlength="9" placeholder="nit proveedor" required v-model="nit_proveedor"/>
+                    <label for="muestra">No. MUESTRA:</label>
+                    <input type="search" class="form-control" id="muestra" name="muestra"  maxlength="3" placeholder="No. de Muestra"  v-model="id_solicitud"/>
                 </div>
                 <br>
                 <div class="form-group">
-                    <button value="Buscar" @click="obtenerMuestra();" class="btn btn-success">BUSCAR</button>
+                    <button value="Buscar" @click="obtenerSolicitudBitacora();" class="btn btn-success">BUSCAR</button>
                     <button id="reload" value="reload" class="btn btn-warning">LIMPIAR</button>
-                    <br>
-                </div>
-            </div>
-                    
+                </div>            
         </div>
+    </div>
         <br>
+    <div >
         <table id="table" class="table">
             <thead align="left">
-                <tr>
-                    <th scope="col">SOLICITUD</th>
-                </tr>
+                <th scope="col">USUARIO:</th>
+                <th scope="col">FECHA INGRESO:</th>
+                <th scope="col">NO. MUESTRA:</th> 
+                <th scope="col">NO. SOLICITUD.:</th>
+                <th scope="col">ESTADO ANTERIOR:</th>
+                <th scope="col">ESTADO NUEVO:</th>
+                <th scope="col">FECHA INGRESO:</th>
+                <th scope="col">FECHA FIN:</th>    
             </thead>
             <tbody class="table-group-divider">
-                <tr v-for="(solicitudes, index) in solicitudes" :key="index">
-                    <td>
-                        <strong>NO. SOLICITUD:</strong> {{ solicitudes.id_solicitud }} <br>
-                        <strong>FECHA:</strong> {{ solicitudes.fecha_ingreso }} <br>
-                        <strong>NIT PROVEEDOR:</strong> {{ solicitudes.nit_proveedor }} <br>
-                        <strong>NO. MUESTRA:</strong> {{ solicitudes.id_solicitud }} <br>
-                        <strong>ESTADO SOLICITUD:</strong> {{ solicitudes.nombre_es_solicitud }} <br>
-                        <strong>ESTADO MUESTRA:</strong> {{ solicitudes.nombre_es_muestra }} <br>
-                        <strong>ESTADO PORCION:</strong> {{ solicitudes.nombre_es_porcion }} <br>
-                        <strong>USUARIO ASIGNADO:</strong> {{ solicitudes.nombre_usuario }} <br>
-                        <strong>ROL:</strong> {{ solicitudes.nombre_rol }} <br>
-                    </td>
+                <tr v-for="(bitacora_solicitud, index) in bitacora_solicitud">
+                    <td> {{ bitacora_solicitud.nombre_usuario  }} </td>
+                    <td> {{ bitacora_solicitud.fecha }} </td>
+                    <td> {{ bitacora_solicitud.id_solicitud }} </td>
+                    <td> {{ bitacora_solicitud.id_bitacora }} </td>
+                    <td> {{ bitacora_solicitud.accion }} </td>
+                    <td> {{ bitacora_solicitud.accion }} </td>
+                    <td> {{ bitacora_solicitud.fecha }} </td>
+                    <td> {{ bitacora_solicitud.fecha }} </td>
                 </tr>
-                <button onclick="imprimirPDF()" class="btn btn-success"><i></i>&nbsp;Descargar</button> 
             </tbody>
-            
+            <button onclick="imprimirPDF()" class="btn btn-success"><i></i>&nbsp;Descargar</button> 
         </table>
         <br>
     </div>
-
+</div>
     <script>
-        var app3 = new Vue({
-            el: '#app3',
+        var app6 = new Vue({
+            el: '#app6',
             data: {
-                solicitudes: [],
+                bitacora_solicitud: [],
                 id_solicitud: '',
-                fecha_ingreso : '',
-                nit_proveedor: '',
-                id_estado_solicitud: '',
-                id_estado_muestra: '',
-                id_estado_porcion_muestra: '',
-                nombre_usuario : '',
-                id_rol: ''
+                id_bitacora: '',
+                fecha: '',
+                accion:'',
+                nombre_usuario: ''
             },
             methods: {
-                obtenerMuestra: function() {
-                var nit_proveedor = this.nit_proveedor;
+                obtenerSolicitudBitacora: function() {
+                var id_solicitud = this.id_solicitud;
 
-                if(nit_proveedor !== '') {
-                    axios.post('api3.php', {
-                    request: 1,
-                    nit_proveedor: nit_proveedor
+                if(id_solicitud !== '' ) {
+                    axios.post('api2.php', {
+                    request: 2,
+                    id_solicitud: id_solicitud
                  })
                  .then(response => {
                     // Actualiza el estado con los datos recibidos
-                     this.solicitudes = response.data;
+                     this.bitacora_solicitud = response.data;
                     if (response.data.length === 0) {
-                    alert('No se encontraron solicitudes para el NIT proporcionado.');
+                    alert('No se encontraron solicitudes para el dato proporcionado.');
                     }
                  })
                 .catch(error => {
                      console.error(error);
                      alert('Ocurrió un error al obtener los datos. Por favor, intenta de nuevo.');
                     });
-                } 
-                },
+                }
 
-                
+                },
+   
             },
 
             created: function() {
-                this.obtenerMuestra();
+                this.obtenerSolicitudBitacora();
             }
         })
     </script>
@@ -141,11 +142,11 @@
           html2pdf()
             .set({
               margin: 10,
-              filename: 'visualizacion_solicitud.pdf',
+              filename: 'Rep_de_Trazabilidad.pdf',
               image: { type: 'jpeg', quality: 0.98 },
               html2canvas: { dpi: 192, letterRendering: true },
-              //jsPDF: { unit: 'pt', format: 'a4', orientation: 'landscape' } 
-              jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
+              jsPDF: { unit: 'pt', format: 'a4', orientation: 'landscape' } 
+              //jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
             })
             .from(element)
             .save();
@@ -158,6 +159,7 @@
         location.reload();
         });
     </script>
-    
+
 </body>
+
 </html>

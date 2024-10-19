@@ -24,14 +24,14 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="home.html">DASHBOARD</a>
+                  <a class="nav-link" href="home.html">MENU</a>
                 </li>
               </ul>
           </div>
         </div>
       </nav>
     
-    <div id="app1" align="center" width="200">
+    <div id="app6" align="center" width="200">
         <div>
             <div class="full-box page-header">
                 <h2 class="text-center">
@@ -48,27 +48,21 @@
 
         <table class="table">
             <thead align="left">
-                <th scope="col">NIT</th>
-                <th scope="col">NOMBRE</th>
+                <th scope="col">ID</th>
+                <th scope="col">NO. SOLICITUD</th>
+                <th scope="col">NOMBRE USUARIO</th>
                 <th scope="col">ROL</th>
-                <th scope="col">PUESTO</th>
-                <th scope="col">CORREO</th>
-                <th scope="col">CONTRASEÑA</th>
-                <th scope="col">ESTADO</th>
-                <th scope="col">DESCRIPCION</th>
+                <th scope="col">ACCION</th>
+                <th scope="col">FECHA</th>
             </thead>
             <tbody class="table-group-divider">
-                <tr v-for="(usuario, index) in usuario">
-                    <td> {{ usuario.nit_usuario }} </td>
-                    <td> {{ usuario.nombre_usuario }} </td>
-                    <td> {{ usuario.id_rol }} </td>
-                    <td> {{ usuario.id_puesto }} </td>
-                    <td> {{ usuario.correo_usuario }} </td>
-                    <td> {{ usuario.pass_usuario }} </td>
-                    <td> {{ usuario.estado }} </td>
-                    <td> {{ usuario.motivo_estado }} </td>
-                    <td> <button value="editar" class="btn btn-warning" @click="editUsuario(index, usuario.nit_usuario)"> EDITAR </button> </td>
-                    <td> <button value="eliminar" class="btn btn-danger" @click="deleteUsuario(index, usuario.nit_usuario)"> ELIMINAR </button> </td>
+                <tr v-for="(bitacora_solicitud, index) in bitacora_solicitud">
+                    <td> {{ bitacora_solicitud.id_bitacora }} </td>
+                    <td> {{ bitacora_solicitud.id_bitacora }} </td>
+                    <td> {{ bitacora_solicitud.nombre_usuario }} </td>
+                    <td> {{ bitacora_solicitud.nombre_rol }} </td>
+                    <td> {{ bitacora_solicitud.accion }} </td>
+                    <td> {{ bitacora_solicitud.fecha }} </td>
                 </tr>
             </tbody>
         </table>
@@ -77,85 +71,36 @@
     </div>
 
     <script>
-        var app1 = new Vue({
-            el: '#app1',
+        var app6 = new Vue({
+            el: '#app6',
             data: {
-                usuario: [],
-                nit_usuario: '',
+                bitacora_solicitud: [],
+                id_bitacora: '',
+                id_solicitud: '',
                 nombre_usuario: '',
                 id_rol: '',
-                id_puesto: '',
-                correo_usuario: '',
-                pass_usuario: '',
-                estado: '',
-                motivo_estado: ''
+                accion: '',
+                fecha: '',
+                nombre_rol: ''
+
             },
             methods: {
-                obtenerUsuario: function() {
-                    axios.post('api1.php', {
+                obtenerSolicitudBitacora: function() {
+                    axios.post('api2.php', {
                         request: 1
                     })
                     .then(function(response) {
-                        app1.usuario = response.data;
+                        app6.bitacora_solicitud = response.data;
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
-                }, 
-
-                editUsuario: function(index, nit_usuario) {
-                    var nombre_usuario = this.nombre_usuario;
-                    var id_rol = this.id_rol;
-                    var id_puesto = this.id_puesto;
-                    var correo_usuario = this.correo_usuario;
-                    var pass_usuario = this.pass_usuario;
-                    
-
-                    if(this.nombre_usuario != '' && this.id_rol !='' && this.id_puesto !='' && this.correo_usuario !='' && this.pass_usuario != '') {
-                        axios.post('api1.php', {
-                            request: 3,
-                            nit_usuario: nit_usuario,
-                            nombre_usuario: nombre_usuario,
-                            id_rol: id_rol,
-                            id_puesto: id_puesto,
-                            correo_usuario: correo_usuario,
-                            pass_usuario: pass_usuario
-                            
-                        })
-                        .then(function(response) {
-                            app1.obtenerUsuario();
-                            app1.nombre_usuario = '';
-                            app1.id_rol = '';
-                            app1.id_puesto = '';
-                            app1.correo_usuario = '';
-                            app1.pass_usuario = '';
-                            
-                            alert(response.data);
-                        })
-                        .catch(function(error) {
-                            console.log(error);
-                        });
-                    }
                 },
-
-                deleteUsuario: function(index, nit_usuario) {
-                    axios.post('api1.php', {
-                        request: 4,
-                        nit_usuario: nit_usuario
-                    })
-                    .then(function(response) {
-                        app1.obtenerUsuario();
-                        alert(response.data);
-                    })
-                    .catch( function(error) {
-                        console.log(error);
-                    });
-                }
-
+   
             },
 
             created: function() {
-                this.obtenerUsuario();
+                this.obtenerSolicitudBitacora();
             }
         })
     </script>

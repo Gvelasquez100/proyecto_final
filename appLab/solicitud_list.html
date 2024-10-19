@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EMPLEADO</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="full-box page-header" style="background-color: rgb(71, 120, 211);">
+        <h2 class="text-center">
+            <i class="fab fa-dashcube fa-fw"></i> &nbsp; 
+        </h2>
+        <p class="text-justify">
+        </p>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="home_empleado.html">MENU </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="solicitud_crear.html">REGISTRO DE SOLICITUDES</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    
+    <div id="app01" align="center" width="200">
+        <div>
+            <div class="full-box page-header">
+                <h2 class="text-center">
+                    <i class="fab fa-dashcube fa-fw"></i> &nbsp; LISTA DE SOLICITUDES Y MUESTRAS
+                </h2>
+                <p class="text-justify">
+                </p>
+            </div>
+        </div>
+
+        <br>
+
+        <table class="table">
+            <thead align="left">
+                <th scope="col">NO. SOLICITUD</th>
+                <th scope="col">FECHA INGRESO</th>
+                <th scope="col">NOMBRE USUARIO</th>
+                <th scope="col">TIPO SOLICITUD</th>
+                <th scope="col">TIPO ENTIDAD</th>
+                <th scope="col">NIT PROVEEDOR</th>
+                <th scope="col">NOMBRE PROVEEDOR</th>
+                <th scope="col">SOLICITANTE</th>
+                <th scope="col">CANT. MUESTRA</th>
+                <th scope="col">DESCRIPCION</th>
+                <th scope="col">ESTADO SOLICITUD</th>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr v-for="(solicitudes, index) in solicitudes">
+                    <td> {{ solicitudes.id_solicitud }} </td>
+                    <td> {{ solicitudes.fecha_ingreso }} </td>
+                    <td> {{ solicitudes.nombre_usuario }} </td>
+                    <td> {{ solicitudes.nombre_solicitud }} </td>
+                    <td> {{ solicitudes.nombre_tipo_entidad }} </td>
+                    <td> {{ solicitudes.nit_proveedor }} </td>
+                    <td> {{ solicitudes.nombre_proveedor }} </td>
+                    <td> {{ solicitudes.nombre_solicitante }} </td>
+                    <td> {{ solicitudes.cant_muestras }} </td>
+                    <td> {{ solicitudes.desc_muestra }} </td>
+                    <td> {{ solicitudes.nombre_es_solicitud }} </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+        
+    </div>
+
+    <script>
+        var app01 = new Vue({
+            el: '#app01',
+            data: {
+                solicitudes: [],
+                id_solicitud: '',
+                fecha_ingreso: '',
+                nit_usuario: '',
+                nombre_usuario: '',
+                id_rol: '',
+                id_tipo_solicitud: '',
+                id_tipo_entidad: '',
+                nombre_entidad: '',
+                nit_proveedor: '',
+                nombre_proveedor: '',
+                correo_proveedor: '',
+                direccion_proveedor: '',
+                telefono_proveedor: '',
+                nit_solicitante: '',
+                nombre_solicitante: '',
+                correo_solicitante: '',
+                cant_muestras: '',
+                desc_muestra: '',
+                id_documento: '',
+                documento: '',
+                id_estado_solicitud: '',
+                id_estado_muestra: '',
+                id_estado_porcion_muestra: '',
+                nombre_solicitud:'',
+                nombre_tipo_entidad:'',
+                nombre_es_solicitud:''
+
+            },
+            methods: {
+                obtenerSolicitud: function() {
+                    axios.post('api5.php', {
+                        request: 1
+                    })
+                    .then(function(response) {
+                        app01.solicitudes = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                }, 
+
+                addSolicitud: function() {
+                    if(this.nit_usuario != '' && this.nombre_usuario != '' && this.id_rol !='' && this.id_tipo_solicitud !='' && this.id_tipo_entidad !='' 
+                    && this.nombre_entidad != '' && this.nit_proveedor != '' && this.nombre_proveedor != '' && this.correo_proveedor != '' && this.direccion_proveedor != ''
+                    && this.telefono_proveedor != '' && this.nit_solicitante != '' && this.nombre_solicitante != '' && this.correo_solicitante != '' && this.cant_muestras != ''
+                    && this.desc_muestra != '' && this.id_documento != '' && this.documento != '') {
+                        axios.post('api5.php', {
+                            request: 2,
+                            nit_usuario: this.nit_usuario,
+                            nombre_usuario: this.nombre_usuario,
+                            id_rol: this.id_rol,
+                            id_tipo_solicitud: this.id_tipo_solicitud,
+                            id_tipo_entidad: this.id_tipo_entidad,
+                            nombre_entidad: this.nombre_entidad,
+                            nit_proveedor: this.nit_proveedor,
+                            nombre_proveedor: this.nombre_proveedor,
+                            correo_proveedor: this.correo_proveedor,
+                            direccion_proveedor: this.direccion_proveedor,
+                            telefono_proveedor: this.telefono_proveedor,
+                            nit_solicitante: this.nit_solicitante,
+                            nombre_solicitante: this.nombre_solicitante,
+                            correo_solicitante: this.correo_solicitante,
+                            cant_muestras: this.cant_muestras,
+                            desc_muestra: this.desc_muestra,
+                            id_documento: this.id_documento,
+                            documento: this.documento
+                        })
+                        .then(function(response) {
+                            app01.obtenerSolicitud();
+                            
+                            app01.id_solicitud= '',
+                            app01.fecha_ingreso= '',
+                            app01.nit_usuario= '',
+                            app01.nombre_usuario= '',
+                            app01.id_rol= '',
+                            app01.id_tipo_solicitud= '',
+                            app01.id_tipo_entidad= '',
+                            app01.nombre_entidad= '',
+                            app01.nit_proveedor= '',
+                            app01.nombre_proveedor= '',
+                            app01.correo_proveedor= '',
+                            app01.direccion_proveedor= '',
+                            app01.telefono_proveedor= '',
+                            app01.nit_solicitante= '',
+                            app01.nombre_solicitante= '',
+                            app01.correo_solicitante= '',
+                            app01.cant_muestras= '',
+                            app01.desc_muestra= '',
+                            app01.id_documento= '',
+                            app01.documento= '',
+                            app01.id_estado_solicitud= '',
+                            app01.id_estado_muestra= '',
+                            app01.id_estado_porcion_muestra= '';
+                            
+
+                            alert(response.data);
+                        })
+                        .catch(function () {
+                            console.log(error);
+                        });
+                    } else {
+                        alert("Llenar los campos.");
+                    }
+                },
+
+                editSolicitud: function(index, id_solicitud) {
+                    var nit_usuario = this.nit_usuario;
+                    var nombre_usuario = this.nombre_usuario;
+                    var id_rol = this.id_rol;
+                    var id_tipo_solicitud = this.id_tipo_solicitud;
+                    var id_tipo_entidad = this.id_tipo_entidad;
+                    var nombre_entidad =  this.nombre_entidad;
+                    var nit_proveedor = this.nit_proveedor;
+                    var nombre_proveedor = this.nombre_proveedor;
+                    var correo_proveedor = this.correo_proveedor;
+                    var direccion_proveedor = this.direccion_proveedor;
+                    var telefono_proveedor = this.telefono_proveedor;
+                    var nit_solicitante = this.nit_solicitante;
+                    var nombre_solicitante = this.nombre_solicitante;
+                    var correo_solicitante = this.correo_solicitante;
+                    var cant_muestras = this.cant_muestras;
+                    var desc_muestra = this.desc_muestra;
+                    var id_documento = this.id_documento;
+                    var documento = this.documento;
+                    
+
+                    if(this.nombre_usuario != '' && this.id_rol !='') {
+                        axios.post('api5.php', {
+                            request: 3,
+                            
+                            nit_usuario: nit_usuario,
+                            nombre_usuario: nombre_usuario,
+                            id_rol: id_rol,
+                            id_tipo_solicitud: id_tipo_solicitud,
+                            id_tipo_entidad: id_tipo_entidad,
+                            nombre_entidad: nombre_entidad,
+                            nit_proveedor: nit_proveedor,
+                            nombre_proveedor: nombre_proveedor,
+                            correo_proveedor: correo_proveedor,
+                            direccion_proveedor: direccion_proveedor,
+                            telefono_proveedor: telefono_proveedor,
+                            nit_solicitante: nit_solicitante,
+                            nombre_solicitante: nombre_solicitante,
+                            correo_solicitante: correo_solicitante,
+                            cant_muestras: cant_muestras,
+                            desc_muestra: desc_muestra,
+                            id_documento: id_documento,
+                            documento: documento
+                            
+                        })
+                        .then(function(response) {
+                            app01.obtenerSolicitud();
+                            app01.id_solicitud= '';
+                            app01.fecha_ingreso= '';
+                            app01.nit_usuario= '';
+                            app01.nombre_usuario= '';
+                            app01.id_rol= '';
+                            app01.id_tipo_solicitud= '';
+                            app01.id_tipo_entidad= '';
+                            app01.nombre_entidad= '';
+                            app01.nit_proveedor= '';
+                            app01.nombre_proveedor= '';
+                            app01.correo_proveedor= '';
+                            app01.direccion_proveedor= '';
+                            app01.telefono_proveedor= '';
+                            app01.nit_solicitante= '';
+                            app01.nombre_solicitante= '';
+                            app01.correo_solicitante= '';
+                            app01.cant_muestras= '';
+                            app01.desc_muestra= '';
+                            app01.id_documento= '';
+                            app01.documento= '';
+                            app01.id_estado_solicitud= '';
+                            app01.id_estado_muestra= '';
+                            app01.id_estado_porcion_muestra= '';
+                            
+                            alert(response.data);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    }
+                },
+
+                /*
+                deleteSolicitud: function(index, nit_usuario) {
+                    axios.post('api5.php', {
+                        request: 4,
+                        id_usuario: id_usuario
+                    })
+                    .then(function(response) {
+                        app01.usuario.splice(index, 1);
+                        alert(response.data);
+                    })
+                    .catch( function(error) {
+                        console.log(error);
+                    });
+                }
+
+                */
+                deleteUsuario: function(index, id_solicitud) {
+                    axios.post('api5.php', {
+                        request: 4,
+                        id_solicitud: id_solicitud
+                    })
+                    .then(function(response) {
+                        app01.obtenerSolicitud();
+                        alert(response.data);
+                    })
+                    .catch( function(error) {
+                        console.log(error);
+                    });
+                }
+
+            },
+
+            created: function() {
+                this.obtenerSolicitud();
+            }
+        })
+    </script>
+</body>
+</html>

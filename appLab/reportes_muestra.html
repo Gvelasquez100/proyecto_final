@@ -27,25 +27,25 @@
               <li class="nav-item">
                 <a class="nav-link" href="home_empleado.html">MENU </a>
               </li>
+              <li class="nav-item"></li>
+                <a class="nav-link" href="reportes.html">REPORTE POR ESTADO</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="reportes_trazabilidad.html">REPORTE DE TRAZABILIDA</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="reportes_solicitudes.html">REPORTE DE SOLICITUDES</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="reportes_muestra.html">REPORTE DE MUESTRAS</a>
-              </li>
             </ul>
           </div>
         </div>
       </nav>
     
-    <div id="app5" align="center" width="200">
+    <div id="app9" align="center" width="200">
         <div>
             <div class="full-box page-header">
                 <h2 class="text-center">
-                    <i class="fab fa-dashcube fa-fw"></i> &nbsp; REPORTE POR ESTADO DE MUESTRA
+                    <i class="fab fa-dashcube fa-fw"></i> &nbsp; REPORTE DE MUESTRAS ASIGNADAS POR ANALISTA
                 </h2>
                 <p class="text-justify">
                 </p>
@@ -61,34 +61,12 @@
                     <input type="date" class="form-control" id="fecha_fin" name="fecha_fin"/>
                 </div>
                 <div class="form-group">
-                    <label for="estadoMuestra" class="form-label">ESTADO DE MUESTRA:</label>
-                    <select class="form-select" id="estadoMuestra" v-model="id_estado_muestra">
-                      <option selected>Selecciona un Estado</option>
-                      <option value="1">RE-Registrada</option>
-                      <option value="2">AN-En Analisis</option>
-                      <option value="3">AE-Analisis Externo</option>
-                      <option value="4">DS-Devuelta a solicitante interno</option>
-                      <option value="5">ECT-Consumo Total</option>
-                      <option value="6">TA-Traslado Almacenamiento</option>
-                      <option value="7">BG-En Bodega</option>
-                      <option value="8">EN-En Notificacion</option>
-                      <option value="9">DV-Devuelta al Interesado</option>
-                      <option value="10">DE-Muestra Destruida</option>
-                      <option value="11">IO-Inactivación de Oficio</option>
-                      <option value="12">RC-Rechazada</option>
-                    </select>
+                    <label for="nombreAnalista">ANALISTA:</label>
+                    <input type="search" class="form-control" id="nombreAnalista" name="nombreAnalista"  maxlength="35" placeholder="Nombre Analista"  v-model="nombre_usuario"/>
                 </div>
                 <div class="form-group">
-                    <label for="muestra">No. MUESTRA:</label>
-                    <input type="search" class="form-control" id="muestra" name="muestra"  maxlength="3" placeholder="No. de Muestra"  v-model="id_solicitud"/>
-                </div>
-                <div class="form-group">
-                    <label for="tipoSolic" class="form-label">TIPO SOLICITUD:</label>
-                    <select class="form-select" id="tipoSolic" v-model="id_tipo_solicitud">
-                      <option selected>Selecciona un Tipo de Solicitud</option>
-                      <option value="1">Muestra para Analisis</option>
-                      <option value="2">Solicitud sin Muestra</option>
-                    </select>
+                    <label for="noMuestra">NO. DE MUESTRA</label>
+                    <input type="search" class="form-control" id="noMuestra" name="noMuestra"  maxlength="2" placeholder="No. muestra"  v-model="id_solicitud"/>
                 </div>
                 <br>
                 <div class="form-group">
@@ -102,31 +80,27 @@
         <table id="table" class="table">
             <thead align="left">
                 <th scope="col">NO. SOLICITUD:</th>
-                <th scope="col">NO. MUESTRA:</th>
+                <th scope="col">ANALISTA ASIGNADO:</th>           
                 <th scope="col">ESTADO MUESTRA:</th>
                 <th scope="col">ESTADO SOLICITUD:</th>
-                <th scope="col">FECHA INGRESO:</th>
-                <th scope="col">CANT. MUESTRA:</th>
-                <th scope="col">TIPO DE SOLICITUD:</th>
+                <th scope="col">FECHA INICIO:</th>
+                <th scope="col">NO. MUESTRA:</th>
+                <th scope="col">TIPO SOLICITUD:</th>
                 <th scope="col">NIT PROVEEDOR:</th>
-                <th scope="col">PROVEEDOR:</th>
                 <th scope="col">SOLICITANTE:</th>
-                <th scope="col">ANALISTA ASIGNADO:</th>
                 <th scope="col">DESCRIPCION:</th>
             </thead>
             <tbody class="table-group-divider">
                 <tr v-for="(solicitudes, index) in solicitudes">
                     <td> {{ solicitudes.id_solicitud }} </td>
-                    <td> {{ solicitudes.id_solicitud }} </td>
+                    <td> {{ solicitudes.nombre_usuario }} </td>
                     <td> {{ solicitudes.nombre_es_muestra }} </td>
                     <td> {{ solicitudes.nombre_es_solicitud }} </td>
                     <td> {{ solicitudes.fecha_ingreso }} </td>
-                    <td> {{ solicitudes.cant_muestras }} </td>
+                    <td> {{ solicitudes.id_solicitud  }} </td>
                     <td> {{ solicitudes.nombre_solicitud }} </td>
-                    <td> {{ solicitudes.nit_proveedor }} </td>
-                    <td> {{ solicitudes.nombre_proveedor }} </td>
+                    <td> {{ solicitudes.nit_proveedor}} </td>
                     <td> {{ solicitudes.nombre_solicitante }} </td>
-                    <td> {{ solicitudes.nombre_usuario }} </td>
                     <td> {{ solicitudes.desc_muestra }} </td>
                 </tr>
             </tbody>
@@ -136,32 +110,30 @@
     </div>
 </div>
     <script>
-        var app5 = new Vue({
-            el: '#app5',
+        var app9 = new Vue({
+            el: '#app9',
             data: {
                 solicitudes: [],
                 id_solicitud: '',
                 id_estado_muestra: '',
                 id_estado_solicitud: '',
                 fecha_ingreso : '',
-                cant_muestras: '',
                 id_tipo_solicitud:'',
                 nit_proveedor: '',
+                nit_solicitante: '',
                 nombre_proveedor: '',
-                nombre_solicitante:'',
                 nombre_usuario: '',
                 desc_muestra: ''
             },
             methods: {
                 obtenerSolicitud: function() {
                 var fecha_ingreso = this.fecha_ingreso;
-                var id_estado_muestra = this.id_estado_muestra;
+                var nombre_usuario = this.nombre_usuario;
                 var id_solicitud = this.id_solicitud;
-                var id_tipo_solicitud = this.id_tipo_solicitud;
 
                 if(fecha_ingreso !== '' ) {
-                    axios.post('api3.php', {
-                    request: 3,
+                    axios.post('api4.php', {
+                    request: 1,
                     fecha_ingreso: fecha_ingreso
                  })
                  .then(response => {
@@ -177,10 +149,10 @@
                     });
                 } 
 
-                if(id_estado_muestra !== '' ) {
-                    axios.post('api3.php', {
-                    request: 4,
-                    id_estado_muestra: id_estado_muestra
+                if(nombre_usuario !== '' ) {
+                    axios.post('api4.php', {
+                    request: 6,
+                    nombre_usuario: nombre_usuario
                  })
                  .then(response => {
                     // Actualiza el estado con los datos recibidos
@@ -196,27 +168,9 @@
                 }
 
                 if(id_solicitud !== '' ) {
-                    axios.post('api3.php', {
-                    request: 5,
+                    axios.post('api4.php', {
+                    request: 7,
                     id_solicitud: id_solicitud
-                 })
-                 .then(response => {
-                    // Actualiza el estado con los datos recibidos
-                     this.solicitudes = response.data;
-                    if (response.data.length === 0) {
-                    alert('No se encontraron solicitudes para el dato proporcionado.');
-                    }
-                 })
-                .catch(error => {
-                     console.error(error);
-                     alert('Ocurrió un error al obtener los datos. Por favor, intenta de nuevo.');
-                    });
-                } 
-
-                if(id_tipo_solicitud !== '' ) {
-                    axios.post('api3.php', {
-                    request: 6,
-                    id_tipo_solicitud: id_tipo_solicitud
                  })
                  .then(response => {
                     // Actualiza el estado con los datos recibidos
@@ -248,7 +202,7 @@
           html2pdf()
             .set({
               margin: 10,
-              filename: 'Rep_por_estado.pdf',
+              filename: 'Rep_muestras_asignadas.pdf',
               image: { type: 'jpeg', quality: 0.98 },
               html2canvas: { dpi: 192, letterRendering: true },
               jsPDF: { unit: 'pt', format: 'legal', orientation: 'landscape' } 
@@ -258,14 +212,14 @@
             .save();
         }
     </script>
-
+    
     <script>
         const reload = document.getElementById("reload");
         reload.addEventListener("click", (_) => {
         location.reload();
         });
     </script>
-
+                
 </body>
 
 </html>

@@ -25,11 +25,13 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="home_empleado.html">DASHBOARD</a>
+                <a class="nav-link" href="home_empleado.html">MENU </a>
               </li>
+              <!--
               <li class="nav-item">
                 <a class="nav-link" href="solicitud.html">VISUALIZACION DE SOLICITUDES</a>
               </li>
+              -->
             </ul>
           </div>
         </div>
@@ -53,6 +55,7 @@
                 <br>
                   <div class="form-group">
                     <button value="Buscar" @click="obtenerMuestra();" class="btn btn-success">BUSCAR</button>
+                    <button id="reload" value="reload" class="btn btn-warning">LIMPIAR</button>
                 </div>            
         </div>
     </div>
@@ -148,6 +151,14 @@
             .save();
         }
     </script>
+
+    <script>
+        const reload = document.getElementById("reload");
+        reload.addEventListener("click", (_) => {
+        location.reload();
+        });
+    </script>
+
 </body>
 
 </html>
