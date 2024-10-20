@@ -24,7 +24,25 @@
 
     if($request == 2){
       $id_solicitud = $datos->id_solicitud;
-      $sql = "SELECT id_bitacora, id_solicitud, nombre_usuario, accion, fecha FROM db_muestras.bitacora_solicitud WHERE id_solicitud = '$id_solicitud'";
+      $sql = "SELECT b.id_bitacora, b.id_solicitud, b.nit_usuario, b.nombre_usuario, r.nombre_rol, b.accion, b.fecha, b.estado_anterio, b.estado_nuevo, b.fecha_nuevo
+              FROM db_muestras.bitacora_solicitud b
+              INNER JOIN db_muestras.roles r ON b.id_rol = r.id_rol
+              WHERE id_solicitud = '$id_solicitud'";
+      $query = $mysqli->query($sql);
+        
+      $datos = array();
+      while($resultado = $query->fetch_assoc()) {
+        $datos[] = $resultado;
+      }
+        
+      echo json_encode($datos);
+      exit;
+    }
+
+    if($request == 3){
+      $sql = "SELECT b.id_bitacora, b.id_solicitud, b.nit_usuario, b.nombre_usuario, r.nombre_rol, b.accion, b.fecha, b.estado_anterio, b.estado_nuevo, b.fecha_nuevo
+              FROM db_muestras.bitacora_solicitud b
+              INNER JOIN db_muestras.roles r ON b.id_rol = r.id_rol";
       $query = $mysqli->query($sql);
         
       $datos = array();

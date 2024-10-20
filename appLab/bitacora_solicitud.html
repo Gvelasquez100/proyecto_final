@@ -48,21 +48,26 @@
 
         <table class="table">
             <thead align="left">
-                <th scope="col">ID</th>
-                <th scope="col">NO. SOLICITUD</th>
+                <th scope="col">NO. MUESTRA</th>
                 <th scope="col">NOMBRE USUARIO</th>
                 <th scope="col">ROL</th>
-                <th scope="col">ACCION</th>
-                <th scope="col">FECHA</th>
+                <th scope="col">NO.</th>
+                <th scope="col">ESTADO ANTERIOR</th>
+                <th scope="col">ESTADO NUEVO</th>
+                <th scope="col">FECHA </th>
+                
+     
             </thead>
             <tbody class="table-group-divider">
                 <tr v-for="(bitacora_solicitud, index) in bitacora_solicitud">
-                    <td> {{ bitacora_solicitud.id_bitacora }} </td>
-                    <td> {{ bitacora_solicitud.id_bitacora }} </td>
+                    <td> {{ bitacora_solicitud.id_solicitud }} </td>
                     <td> {{ bitacora_solicitud.nombre_usuario }} </td>
                     <td> {{ bitacora_solicitud.nombre_rol }} </td>
-                    <td> {{ bitacora_solicitud.accion }} </td>
+                    <td> {{ bitacora_solicitud.id_bitacora }} </td>
+                    <td> {{ bitacora_solicitud.estado_anterio }} </td>
+                    <td> {{ bitacora_solicitud.estado_nuevo }} </td>
                     <td> {{ bitacora_solicitud.fecha }} </td>
+                    
                 </tr>
             </tbody>
         </table>
@@ -81,13 +86,16 @@
                 id_rol: '',
                 accion: '',
                 fecha: '',
-                nombre_rol: ''
+                fecha_nuevo: '',
+                nombre_rol: '',
+                estado_anterio: '',
+                estado_nuevo: ''
 
             },
             methods: {
                 obtenerSolicitudBitacora: function() {
                     axios.post('api2.php', {
-                        request: 1
+                        request: 3
                     })
                     .then(function(response) {
                         app6.bitacora_solicitud = response.data;
